@@ -1,141 +1,164 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
+const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numbers = "0123456789";
+const symbols = "!@#$%^&*()-_=+[]{}|;:'\\";
 
 function App() {
-  {
-    const [fullName, setFullName] = useState("");
-    const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
-    const [specializzazione, setSpecializzazione] = useState("");
-    const [experience, setExperience] = useState("");
-    const [bio, setBio] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [specializzazione, setSpecializzazione] = useState("");
+  const [experience, setExperience] = useState("");
+  const [bio, setBio] = useState("");
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (
-        !fullName.trim() ||
-        !userName.trim() ||
-        !password.trim() ||
-        !specializzazione.trim() ||
-        !experience.trim() ||
-        experience <= 0 ||
-        !bio.trim()
-      ) {
-        alert("Errore: Compilare tutti i campi");
-        return;
-      }
-      console.log("Form Compilato correttamente", {
-        fullName,
-        userName,
-        password,
-        specializzazione,
-        experience,
-        bio,
-      });
-      setFullName("");
-      setUserName("");
-      setPassword("");
-      setSpecializzazione("");
-      setExperience("");
-      setBio("");
-      alert("Form Compilato!");
-    };
+  const userNameValidation = useMemo(() => {
+    if (!userName) return null;
+    //solo alfanumerici, almeno 6 caratteri, no spazi o simboli
+    const validChars = userName
+      .split("")
+      .every((char) => letters.includes(char) || numbers.includes(char));
+    return validChars && userName.trim().length >= 6;
+  }, [userName]);
 
+  const passwordValidation = useMemo(() => {
+    //deve contenere 1 numero, 1 simbolo, 1 lettera, 8 caratteri
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
-        <h1 className="p-3">Web Developer Signup</h1>
-        <form
-          className="w-50 border p-4 shadow rounded"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-3">
-            <label htmlFor="FullName" className="form-label">
-              Nome completo
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="FullName"
-              placeholder="Inserisci il tuo nome"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="UserName" className="form-label">
-              Username
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="UserName"
-              placeholder="Inserisci il tuo username"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Inserisci la tua password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="Spec" className="form-label">
-              Scegli la tua specializzazione
-            </label>
-            <select
-              name="Specialization"
-              id="Spec"
-              className="form-label m-2"
-              value={specializzazione}
-              onChange={(e) => setSpecializzazione(e.target.value)}
-            >
-              <option value="">Seleziona...</option>
-              <option value="fullstack">Full Stack</option>
-              <option value="frontend">Frontend</option>
-              <option value="backend">Backend</option>
-            </select>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="Experience" className="form-label">
-              Anni di Esperienza
-            </label>
-            <input
-              type="number"
-              id="Experience"
-              className="form-control"
-              placeholder="Write a number"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="sml-bio" className="form-label">
-              Breve descrizione sullo sviluppatore
-            </label>
-            <textarea
-              type="text-area"
-              className="form-control"
-              id="sml-bio"
-              placeholder="Scrivi una breve descrizione"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
-      </div>
+      password.trim().length >= 8 &&
+      password.split("").some((char) => letters.includes(char)) &&
+      password.split("").some((char) => numbers.includes(char)) &&
+      password.split("").some((char) => symbols.includes(char))
     );
-  }
+  }, [password]);
+
+  const bioValidation = useMemo(() => {
+    //tra i 100 e i 1000 caratteri
+    return bio.trim().length >= 100 && bio.trim().length <= 1000;
+  }, [bio]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      !fullName.trim() ||
+      !userName.trim() ||
+      !password.trim() ||
+      !specializzazione.trim() ||
+      !experience ||
+      experience <= 0 ||
+      !bio.trim()
+    ) {
+      alert("Errore: Compilare tutti i campi");
+      return;
+    }
+    console.log("Form Compilato correttamente", {
+      fullName,
+      userName,
+      password,
+      specializzazione,
+      experience,
+      bio,
+    });
+    setFullName("");
+    setUserName("");
+    setPassword("");
+    setSpecializzazione("");
+    setExperience("");
+    setBio("");
+    alert("Form Compilato!");
+  };
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1 className="p-3">Web Developer Signup</h1>
+      <form className="w-50 border p-4 shadow rounded" onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="FullName" className="form-label">
+            Nome completo
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="FullName"
+            placeholder="Inserisci il tuo nome"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="UserName" className="form-label">
+            Username
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="UserName"
+            placeholder="Inserisci il tuo username"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Inserisci la tua password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="Spec" className="form-label">
+            Scegli la tua specializzazione
+          </label>
+          <select
+            name="Specialization"
+            id="Spec"
+            className="form-label m-2"
+            value={specializzazione}
+            onChange={(e) => setSpecializzazione(e.target.value)}
+          >
+            <option value="">Seleziona...</option>
+            <option value="fullstack">Full Stack</option>
+            <option value="frontend">Frontend</option>
+            <option value="backend">Backend</option>
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="Experience" className="form-label">
+            Anni di Esperienza
+          </label>
+          <input
+            type="number"
+            id="Experience"
+            className="form-control"
+            placeholder="Write a number"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="sml-bio" className="form-label">
+            Breve descrizione sullo sviluppatore
+          </label>
+          <textarea
+            type="text-area"
+            className="form-control"
+            id="sml-bio"
+            placeholder="Scrivi una breve descrizione"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
 }
 export default App;
