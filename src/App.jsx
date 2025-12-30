@@ -17,6 +17,7 @@ function App() {
     //solo alfanumerici, almeno 6 caratteri, no spazi o simboli
     const validChars = userName
       .split("")
+      // * validChars = [...userName].every(char=>etc) facendo lo spread di userName posso ottenere tutti i caratteri
       .every((char) => letters.includes(char) || numbers.includes(char));
     return validChars && userName.trim().length >= 6;
   }, [userName]);
@@ -96,6 +97,13 @@ function App() {
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
+          {userName.trim() && (
+            <p style={{ color: userNameValidation ? "green" : "red" }}>
+              {userNameValidation
+                ? "Username valido"
+                : "Deve avere almeno 6 caratteri"}
+            </p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -109,6 +117,13 @@ function App() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {password.trim() && (
+            <p style={{ color: passwordValidation ? "green" : "red" }}>
+              {passwordValidation
+                ? "Password Valida"
+                : "Deve avere almeno 8 caratteri, 1 numero, 1 simbolo e 1 lettera."}
+            </p>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="Spec" className="form-label">
@@ -152,6 +167,15 @@ function App() {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
+          {bio.trim() && (
+            <p style={{ color: bioValidation ? "green" : "red" }}>
+              {bioValidation
+                ? "Descrizione valida"
+                : `Deve avere tra 100 e 1000 caratteri.  Actual length: ${
+                    bio.trim().length
+                  }`}
+            </p>
+          )}
         </div>
 
         <button type="submit" className="btn btn-primary">
