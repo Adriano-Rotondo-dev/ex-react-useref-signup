@@ -1,0 +1,129 @@
+import { useState } from "react";
+
+function App() {
+  {
+    const [fullName, setFullName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+    const [specializzazione, setSpecializzazione] = useState("");
+    const [experience, setExperience] = useState("");
+    const [bio, setBio] = useState("");
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (
+        !fullName.trim() ||
+        !userName.trim() ||
+        !password.trim() ||
+        !specializzazione.trim() ||
+        !experience.trim() ||
+        experience <= 0 ||
+        !bio.trim()
+      ) {
+        alert("Errore: Compilare tutti i campi");
+        return;
+      }
+      console.log("Form Compilato correttamente", {
+        fullName,
+        userName,
+        password,
+        specializzazione,
+        experience,
+        bio,
+      });
+      alert("Form Compilato!");
+    };
+
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <h1 className="p-3">Web Developer Signup</h1>
+        <form
+          className="w-50 border p-4 shadow rounded"
+          onSubmit={handleSubmit}
+        >
+          <div className="mb-3">
+            <label htmlFor="FullName" className="form-label">
+              Nome completo
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="FullName"
+              placeholder="Inserisci il tuo nome"
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="UserName" className="form-label">
+              Username
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="UserName"
+              placeholder="Inserisci il tuo username"
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Inserisci la tua password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Spec" className="form-label">
+              Scegli la tua specializzazione
+            </label>
+            <select
+              name="Specialization"
+              id="Spec"
+              className="form-label m-2"
+              onChange={(e) => setSpecializzazione(e.target.value)}
+            >
+              <option value="">Seleziona...</option>
+              <option value="fullstack">Full Stack</option>
+              <option value="frontend">Frontend</option>
+              <option value="backend">Backend</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Experience" className="form-label">
+              Anni di Esperienza
+            </label>
+            <input
+              type="number"
+              id="Experience"
+              className="form-control"
+              placeholder="Write a number"
+              onChange={(e) => setExperience(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="sml-bio" className="form-label">
+              Breve descrizione sullo sviluppatore
+            </label>
+            <textarea
+              type="text-area"
+              className="form-control"
+              id="sml-bio"
+              placeholder="Scrivi una breve descrizione"
+              onChange={(e) => setBio(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+export default App;
