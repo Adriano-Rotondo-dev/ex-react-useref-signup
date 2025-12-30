@@ -46,7 +46,11 @@ function App() {
       !specializzazione.trim() ||
       !experience ||
       experience <= 0 ||
-      !bio.trim()
+      !bio.trim() ||
+      // submit validation
+      !userNameValidation ||
+      !passwordValidation ||
+      !bioValidation
     ) {
       alert("Errore: Compilare tutti i campi");
       return;
