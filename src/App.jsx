@@ -31,6 +31,12 @@ function App() {
         experience,
         bio,
       });
+      setFullName("");
+      setUserName("");
+      setPassword("");
+      setSpecializzazione("");
+      setExperience("");
+      setBio("");
       alert("Form Compilato!");
     };
 
@@ -50,6 +56,7 @@ function App() {
               className="form-control"
               id="FullName"
               placeholder="Inserisci il tuo nome"
+              value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
@@ -62,6 +69,7 @@ function App() {
               className="form-control"
               id="UserName"
               placeholder="Inserisci il tuo username"
+              value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
           </div>
@@ -74,6 +82,7 @@ function App() {
               className="form-control"
               id="password"
               placeholder="Inserisci la tua password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -85,6 +94,7 @@ function App() {
               name="Specialization"
               id="Spec"
               className="form-label m-2"
+              value={specializzazione}
               onChange={(e) => setSpecializzazione(e.target.value)}
             >
               <option value="">Seleziona...</option>
@@ -102,6 +112,7 @@ function App() {
               id="Experience"
               className="form-control"
               placeholder="Write a number"
+              value={experience}
               onChange={(e) => setExperience(e.target.value)}
             />
           </div>
@@ -114,6 +125,7 @@ function App() {
               className="form-control"
               id="sml-bio"
               placeholder="Scrivi una breve descrizione"
+              value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
           </div>
