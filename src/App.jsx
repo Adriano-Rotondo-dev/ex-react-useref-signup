@@ -1,16 +1,19 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const numbers = "0123456789";
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\";
 
 function App() {
-  const [fullName, setFullName] = useState("");
+  //campi controllati
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [specializzazione, setSpecializzazione] = useState("");
-  const [experience, setExperience] = useState("");
   const [bio, setBio] = useState("");
+
+  //campi non controllati => useRef
+  const fullNameRef = useRef();
+  const specRef = useRef();
+  const expRef = useRef();
 
   const userNameValidation = useMemo(() => {
     if (!userName) return null;
@@ -39,6 +42,12 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    //valori non controllati
+    const fullName = fullNameRef.current.value;
+    const specializzazione = specRef.current.value;
+    const experience = expRef.current.value;
+
     if (
       !fullName.trim() ||
       !userName.trim() ||
@@ -63,11 +72,12 @@ function App() {
       experience,
       bio,
     });
-    setFullName("");
+    //personal bonus - reset del form, i campi non controllati non sono più funzioni e gli si assegna una stringa vuota.
+    fullNameRef.current.value = "";
     setUserName("");
     setPassword("");
-    setSpecializzazione("");
-    setExperience("");
+    specRef.current.value = "";
+    expRef.current.value = "";
     setBio("");
     alert("Form Compilato!");
   };
@@ -85,8 +95,7 @@ function App() {
             className="form-control"
             id="FullName"
             placeholder="Inserisci il tuo nome"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            ref={fullNameRef}
           />
         </div>
         <div className="mb-3">
@@ -137,8 +146,7 @@ function App() {
             name="Specialization"
             id="Spec"
             className="form-label m-2"
-            value={specializzazione}
-            onChange={(e) => setSpecializzazione(e.target.value)}
+            ref={specRef}
           >
             <option value="">Seleziona...</option>
             <option value="fullstack">Full Stack</option>
@@ -155,8 +163,7 @@ function App() {
             id="Experience"
             className="form-control"
             placeholder="Write a number"
-            value={experience}
-            onChange={(e) => setExperience(e.target.value)}
+            ref={expRef}
           />
         </div>
         <div className="mb-3">
